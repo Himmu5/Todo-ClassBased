@@ -32,7 +32,6 @@ class Todolist extends Component<Prop> {
                 <div key={index} className="flex items-center my-1 gap-2">
                   <input
                     type="checkbox"
-                    checked
                     onClick={() => this.props.SetDoneTodo(index)}
                     className="accent-yellow-500 bg-white"
                   />
