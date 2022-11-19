@@ -1,10 +1,6 @@
-import {
-  ChangeEventHandler,
-  Component,
-  
-  ReactNode,
-} from "react";
+import { Component, ReactNode } from "react";
 import NoTodo from "./NoTodo";
+import { AiOutlineDelete } from 'react-icons/ai'
 
 type dummy = {
   title?: string;
@@ -12,47 +8,41 @@ type dummy = {
 };
 
 type Prop = {
-  data: dummy[];
+  Remove: (index: number) => void;
   todoList: dummy[];
-  SetDoneTodo: (id: number, str: string) => void;
+  SetDoneTodo: (id: number) => void;
 };
 
 class Todolist extends Component<Prop> {
   render(): ReactNode {
     let FilterArray = this.props.todoList.filter((Item) => {
-      return Item.status = false;
+      return Item.status === false;
     });
 
-    if(FilterArray.length == 0){
-      return <NoTodo />
+    if (FilterArray.length == 0) {
+      return <NoTodo />;
     }
 
     return (
       <div className="text-sm my-4">
-        {FilterArray.map((item, index) => {
-          return (
-            <div key={index} className="flex items-center my-2 gap-2">
-              <input
-                key={index}
-                type="checkbox"
-                onClick={() => this.props.SetDoneTodo(index, "Dummy")}
-              />
-              <p className="w-40">{item.title}</p>
-            </div>
-          );
-        })}
-
         <div>
           {this.props.todoList.map((item, index) => {
             return (
-              item.status === false && (
+              item.status == false && (
                 <div key={index} className="flex items-center my-1 gap-2">
                   <input
-                    key={index}
                     type="checkbox"
-                    onChange={() => this.props.SetDoneTodo(index, "mainTodo")}
+                    checked
+                    onClick={() => this.props.SetDoneTodo(index)}
+                    className="accent-yellow-500 bg-white"
                   />
-                  <p className="w-40">{item.title}</p>
+                  <p>{item.title}</p>
+                  <div
+                    className=" cursor-pointer"
+                    onClick={() => this.props.Remove(index)}
+                  >
+                    <AiOutlineDelete />
+                  </div>
                 </div>
               )
             );

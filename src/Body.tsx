@@ -12,15 +12,14 @@ type mainTodoType = {
 
 type BodyState = {
   form: boolean;
-  dummy: mainTodoType[];
   todoList: mainTodoType[];
 };
 
 type BodyProp = {};
 
 class Body extends Component<BodyProp, BodyState> {
+  oldData: mainTodoType[] = JSON.parse(localStorage.getItem("todo") || "[]");
 
-  
   constructor(props: BodyProp) {
     super(props);
     this.handleButton = this.handleButton.bind(this);
@@ -30,24 +29,9 @@ class Body extends Component<BodyProp, BodyState> {
 
     this.state = {
       form: false,
-      dummy: this.defaultArray,
-      todoList: [{}],
+      todoList: this.oldData,
     };
   }
-  defaultArray: mainTodoType[] = [
-    {
-      title: "Clean my computer",
-      status: false,
-    },
-    {
-      title: "Buy a keyboard",
-      status: false,
-    },
-    {
-      title: "Write an article about @xstate/test",
-      status: true,
-    },
-  ];
 
   handleButton() {
     this.setState({ form: !this.state.form });
@@ -57,40 +41,29 @@ class Body extends Component<BodyProp, BodyState> {
     this.setState({ todoList: NewArr });
   }
 
-  SetDoneTodo(index: number, str: string) {
-    if (str == "mainTodo") {
-      let arr = [...this.state.todoList];
-      arr[index].status = !arr[index].status;
-      this.setState({ todoList: arr });
-      
-    } else {
-      let arr = [...this.state.dummy];
-      arr[index].status = !arr[index].status;
-      this.setState({ dummy: arr });
-    }
+  SetDoneTodo(index: number) {
+    let arr = [...this.state.todoList];
+    arr[index].status = !arr[index].status;
+    this.setState({ todoList: arr });
   }
 
-  Remove(index: number, str: string) {
-    console.log("Number and String :", index, str);
-    if (str == "mainTodo") {
-      let arr = [...this.state.todoList];
-      arr.splice(index, 1);
-      this.setState({ todoList: arr });
-    } else if(str == "Dummy"){
-      let arr = [...this.state.dummy];
-      arr.splice(index, 1);
-      this.setState({ dummy: arr });
-    }
+  Remove(index: number) {
+    let arr = [...this.state.todoList];
+    arr.splice(index, 1);
+    this.setState({ todoList: arr });
+    localStorage.setItem("todo", JSON.stringify(this.state.todoList));
   }
 
   render(): ReactNode {
+    localStorage.setItem("todo", JSON.stringify(this.state.todoList));
+
     return (
       <div className="px-16 mt-12 ">
         <h1 className="text-3xl font-bold ">Things to get done</h1>
         <div className="mt-8 text-md ">
           <h1 className="text-xl font-bold ">Things to do</h1>
           <Todolist
-            data={this.defaultArray}
+            Remove={this.Remove}
             todoList={this.state.todoList}
             SetDoneTodo={this.SetDoneTodo}
           />
@@ -103,15 +76,19 @@ class Body extends Component<BodyProp, BodyState> {
             />
           ) : (
             <div className="flex items-center relative text-white">
-              <AiOutlinePlus />
-              <Button onClick={this.handleButton} extraclass="px-4 text-sm">
+              <div className="text-white absolute left-1" >
+                <AiOutlinePlus />
+              </div>
+              <Button
+                onClick={this.handleButton}
+                extraclass="px-5 py-1 text-md"
+              >
                 Add a todo
               </Button>
             </div>
           )}
           <h1 className="text-xl font-bold ">Things done</h1>
           <DoneList
-            data={this.defaultArray}
             Remove={this.Remove}
             todoList={this.state.todoList}
             SetDoneTodo={this.SetDoneTodo}
