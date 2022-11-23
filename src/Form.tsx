@@ -19,6 +19,7 @@ type FP = {
 
 type STY = {
   textInpt: string;
+  blurClass:boolean;
 };
 
 class Form extends Component<FP, STY> {
@@ -28,9 +29,11 @@ class Form extends Component<FP, STY> {
     super(props);
     this.state = {
       textInpt: "",
+      blurClass:false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -47,8 +50,16 @@ class Form extends Component<FP, STY> {
     this.setState({ textInpt: e.currentTarget.value });
   }
 
+  handleBlur(){
+    console.log("Blur Function");
+    this.setState({blurClass : !this.state.blurClass})
+  }
+
   render(): ReactNode {
-    
+    let blurClassExtra="";
+    if(this.state.blurClass){
+      blurClassExtra=""
+    }
     return (
       <form
         onSubmit={this.handleSubmit}
@@ -59,6 +70,7 @@ class Form extends Component<FP, STY> {
           placeholder="Write an article about XState"
           value={this.state.textInpt}
           onChange={this.handleChange}
+          onChangeCapture={this.handleBlur}
         />
         <div className="space-x-4">
           <Button>Save</Button>
