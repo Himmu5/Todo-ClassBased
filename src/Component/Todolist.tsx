@@ -1,5 +1,5 @@
 import { Component, ReactNode } from "react";
-import NoTodo from "./NoTodo";
+import NoTodo from "./ErrorHandling/NoTodo";
 import { AiOutlineDelete } from 'react-icons/ai'
 
 type dummy = {

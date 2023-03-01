@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Body from "./Body";
-import Nav from "./Nav";
+import Body from "./Component/Body"; 
+import Nav from "./Component/UI-Component/Nav"; 
 
 class App extends Component {
   render(): React.ReactNode {

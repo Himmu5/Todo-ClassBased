@@ -1,6 +1,6 @@
 import { Component, ReactNode } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import NoTodo from "./NoTodo";
+import NoTodo from "./ErrorHandling/NoTodo";
 
 type dummy = {
   title?: string;
